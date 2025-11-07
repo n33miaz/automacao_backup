@@ -1,24 +1,31 @@
+# retire o 'w' de 'run_python.pyw', caso queria ver a janela de execução
+
 import backup
 import cleanup
 import logging
 import shutil
 import config
-import os 
+import os
+from datetime import datetime
 
 def setup_logging():
-    log_dir = os.path.dirname(config.LOG_FILE)
-    if not os.path.exists(log_dir):
-        os.makedirs(log_dir)
-        print(f"Pasta de log criada em: {log_dir}")
+    now = datetime.now()
+    log_folder = os.path.join(config.LOG_DIR, now.strftime('%Y\\%m\\%d'))
+    
+    os.makedirs(log_folder, exist_ok=True)
+    
+    log_filename = now.strftime('backup-log--%H-%M-%S.log')
+    log_file_path = os.path.join(log_folder, log_filename)
 
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[
-            logging.FileHandler(config.LOG_FILE, encoding='utf-8'),
+            logging.FileHandler(log_file_path, encoding='utf-8'),
             logging.StreamHandler()
-        ],
+        ]
     )
+    logging.info(f"====== LOG DESTA EXECUÇÃO SALVO EM: {log_file_path} ======")
 
 def check_disk_space():
     try:
