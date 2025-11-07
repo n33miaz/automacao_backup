@@ -14,7 +14,7 @@ def setup_logging():
     
     os.makedirs(log_folder, exist_ok=True)
     
-    log_filename = now.strftime('backup-log--%H-%M-%S.log')
+    log_filename = now.strftime('backup-log-%Hh%M.log')
     log_file_path = os.path.join(log_folder, log_filename)
 
     logging.basicConfig(
@@ -49,3 +49,4 @@ if __name__ == "__main__":
         cleanup.cleanup_old_backups()
     
     logging.info("====== CICLO DE BACKUP COMPLETO ======\n")
+
